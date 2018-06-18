@@ -66,7 +66,7 @@
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#custom-collapse">
               <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span>
               <span class="icon-bar"></span><span class="icon-bar"></span></button>
-            <a class="navbar-brand" href="index.html">Zoo</a>
+            <a class="navbar-brand" href="index_shop.html">Zoo</a>
           </div>
 
           <!--Nav Bar -->
@@ -126,7 +126,7 @@
               <div class="col-sm-5 col-sm-offset-1 mb-sm-40">
                 <h4 class="font-alt">Login</h4>
                 <hr class="divider-w mb-10">
-                <form class="form">
+                <form class="form" name="loginForm" onSubmit="return validateForm();" action="index_shop.html" method="post">
                   <div class="form-group">
                     <input class="form-control" id="username" type="text" name="username" placeholder="Username"/>
                   </div>
@@ -134,35 +134,144 @@
                     <input class="form-control" id="password" type="password" name="password" placeholder="Password"/>
                   </div>
                   <div class="form-group">
-                    <button class="btn btn-round btn-b">Login</button>
+                    <button class="btn btn-round btn-b" type="submit" value="login">Login</button>
                   </div>
                   <div class="form-group"><a href="">Forgot Password?</a></div>
                 </form>
               </div>
+
               <div class="col-sm-5">
                 <h4 class="font-alt">Register</h4>
                 <hr class="divider-w mb-10">
-                <form class="form">
+                <form class="form" name="regForm" onsubmit="Validate();" action="index_shop.html">
                   <div class="form-group">
-                    <input class="form-control" id="E-mail" type="text" name="email" placeholder="Email"/>
+                    <input class="form-control" id="Email" type="text" name="email" placeholder="Email"/>
+                    <div id="email_error"></div>
                   </div>
                   <div class="form-group">
-                    <input class="form-control" id="username" type="text" name="username" placeholder="Username"/>
+                    <input class="form-control" id="RegUser" type="text" name="username" placeholder="Username"/>
+                    <div id="name_error"></div>
                   </div>
                   <div class="form-group">
-                    <input class="form-control" id="password" type="password" name="password" placeholder="Password"/>
+                    <input class="form-control" id="RegPass" type="password" name="password" placeholder="Password"/>
                   </div>
                   <div class="form-group">
-                    <input class="form-control" id="re-password" type="password" name="re-password" placeholder="Re-enter Password"/>
+                    <input class="form-control" id="confirmPass" type="password" name="confirmPass" placeholder="Re-enter Password"/>
+                    <div id="password_error"></div>
                   </div>
                   <div class="form-group">
-                    <button class="btn btn-block btn-round btn-b">Register</button>
+                    <button class="btn btn-block btn-round btn-b" type="submit" value="register">Register</button>
                   </div>
                 </form>
               </div>
             </div>
           </div>
         </section>
+
+        <script>
+            function validateForm() {
+                var user = document.loginForm.username.value;
+                var pass = document.loginForm.password.value;
+                var username = "username";
+                var password = "password";
+                if ((user == username) && (pass == password)) {
+                    return true;
+                }
+                else {
+                    alert ("Login was unsuccessful, please check your username and password");
+                    return false;
+                }
+            }
+        </script>
+        <script>
+            var email = document.forms['regForm']['email'];
+            var username = document.forms['regForm']['username'];
+            var password = document.forms['regForm']['password'];
+            var password_confirm = document.forms['regForm']['confirmPass'];
+
+            var name_error = document.getElementById('name_error');
+            var email_error = document.getElementById('email_error');
+            var password_error = document.getElementById('password_error');
+
+            username.addEventListener('blur', nameVerify, true);
+            email.addEventListener('blur', emailVerify, true);
+            password.addEventListener('blur', passwordVerify, true);
+
+            function Validate() {
+                // validate email
+                if (email.value == "") {
+                    email.style.border = "1px solid red";
+                    document.getElementById('Email').style.color = "red";
+                    email_error.textContent = "Email is required";
+                    email.focus();
+                    return false;
+                }
+                // validate username
+                if (username.value == "") {
+                    username.style.border = "1px solid red";
+                    document.getElementById('RegUser').style.color = "red";
+                    name_error.textContent = "Username is required";
+                    username.focus();
+                    return false;
+                }
+                if (username.value.length < 3) {
+                    username.style.border = "1px solid red";
+                    document.getElementById('RegUser').style.color = "red";
+                    name_error.textContent = "Username must be at least 3 characters";
+                    username.focus();
+                    return false;
+                }
+                // validate password
+                if (password.value == "") {
+                    password.style.border = "1px solid red";
+                    document.getElementById('RegPass').style.color = "red";
+                    password_confirm.style.border = "1px solid red";
+                    password_error.textContent = "Password is required";
+                    password.focus();
+                    return false;
+                }
+                // check if the two passwords match
+                if (password.value != confirmPass.value) {
+                    password.style.border = "1px solid red";
+                    document.getElementById('pass_confirm_div').style.color = "red";
+                    password_confirm.style.border = "1px solid red";
+                    password_error.innerHTML = "The two passwords do not match";
+                    return false;
+                }
+            }
+            // event handler functions
+            function nameVerify() {
+                if (username.value != "") {
+                    username.style.border = "1px solid #5e6e66";
+                    document.getElementById('RegUser').style.color = "#5e6e66";
+                    name_error.innerHTML = "";
+                    return true;
+                }
+            }
+            function emailVerify() {
+                if (email.value != "") {
+                    email.style.border = "1px solid #5e6e66";
+                    document.getElementById('Email').style.color = "#5e6e66";
+                    email_error.innerHTML = "";
+                    return true;
+                }
+            }
+            function passwordVerify() {
+                if (password.value != "") {
+                    password.style.border = "1px solid #5e6e66";
+                    document.getElementById('RegPass').style.color = "#5e6e66";
+                    document.getElementById('confirmPass').style.color = "#5e6e66";
+                    password_error.innerHTML = "";
+                    return true;
+                }
+                if (password.value === password_confirm.value) {
+                    password.style.border = "1px solid #5e6e66";
+                    document.getElementById('confirmPass').style.color = "#5e6e66";
+                    password_error.innerHTML = "";
+                    return true;
+                }
+            }
+        </script>
 
         <!-- Footer -->
 
